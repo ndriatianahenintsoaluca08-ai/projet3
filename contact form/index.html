@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Formulaire de Contact</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="contact from/style.css" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="form-container">
+
+      <h1>Get in Touch</h1>
+
+      <p>
+        Remplissez le formulaire ci-dessous pour nous contacter
+      </p>
+
+      <!-- FORMULAIRE -->
+      <form id="contact-form">
+
+        <div class="input-group">
+
+          <!-- NOM -->
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Nom"
+              required
+            />
+          </div>
+
+          <!-- EMAIL -->
+          <div class="input-field">
+            <i class="fas fa-envelope"></i>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+            />
+          </div>
+
+          <!-- TELEPHONE -->
+          <div class="input-field">
+            <i class="fas fa-phone"></i>
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Téléphone (optionnel)"
+            />
+          </div>
+
+          <!-- SUJET -->
+          <div class="input-field">
+            <i class="fas fa-tag"></i>
+
+            <input
+              type="text"
+              name="title"
+              placeholder="Sujet"
+              required
+            />
+          </div>
+
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="message-field">
+          <i class="fas fa-message"></i>
+
+          <textarea
+            name="message"
+            placeholder="Votre Message"
+            required
+          ></textarea>
+        </div>
+
+        <!-- BOUTON -->
+        <button type="submit">
+
+          <div class="btn-content">
+
+            <span>Envoyer le Message</span>
+
+            <i class="fas fa-paper-plane"></i>
+
+          </div>
+
+        </button>
+
+      </form>
+
+      <!-- INFOS CONTACT -->
+      <div class="contact-info">
+
+        <div class="info-item">
+          <i class="fas fa-map-marker-alt"></i>
+
+          <span>
+            Fiaro Ampefiloha, Antananarivo, Madagascar
+          </span>
+        </div>
+
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+
+          <span>
+            ndriatianahenintsoaluca08@gmail.com
+          </span>
+        </div>
+
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+
+          <span>
+            +261 38 27 249 04
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- EMAILJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- SCRIPT -->
+  <script src="contact form/script.js"></script>
+
+</body>
+</html>
