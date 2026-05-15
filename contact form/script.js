@@ -1,10 +1,9 @@
 // ============================================
 //   FORMULAIRE DE CONTACT - script.js
-//   Version corrigée EmailJS v4
+//   Version corrigée
 // ============================================
 
 // ── 🔑 IDENTIFIANTS EMAILJS ──────────────────
-// Remplace ces valeurs par les vraies valeurs EmailJS
 const EMAILJS_PUBLIC_KEY  = "8O4_WwxvLZiipZzom";
 const EMAILJS_SERVICE_ID  = "service_1bf9v8v";
 const EMAILJS_TEMPLATE_ID = "template_nwv9o3j";
@@ -35,7 +34,13 @@ inputs.forEach((input) => {
 function validateField(field) {
   const wrapper = field.closest(".input-field, .message-field");
 
-  // Validation email
+  // ✅ FIX #3 : Vérifier le champ vide EN PREMIER
+  if (field.value.trim() === "") {
+    setError(wrapper, field, "Ce champ est requis");
+    return false;
+  }
+
+  // Validation email (seulement si non vide)
   if (field.type === "email") {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -43,12 +48,6 @@ function validateField(field) {
       setError(wrapper, field, "Adresse e-mail invalide");
       return false;
     }
-  }
-
-  // Champ vide
-  if (field.value.trim() === "") {
-    setError(wrapper, field, "Ce champ est requis");
-    return false;
   }
 
   setValid(wrapper, field);
@@ -108,7 +107,6 @@ form.addEventListener("submit", async (e) => {
   setButtonLoading(true);
 
   try {
-    // Envoi EmailJS
     await emailjs.sendForm(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
@@ -117,25 +115,19 @@ form.addEventListener("submit", async (e) => {
 
     showBanner("success");
 
-    // Reset formulaire
     form.reset();
 
     inputs.forEach((input) => {
       input.style.borderColor = "";
       input.style.boxShadow = "";
 
-      const wrapper = input.closest(
-        ".input-field, .message-field"
-      );
-
+      const wrapper = input.closest(".input-field, .message-field");
       const el = wrapper?.querySelector(".error-msg");
-
       if (el) el.remove();
     });
 
   } catch (error) {
     console.error("Erreur EmailJS :", error);
-
     showBanner("error");
   } finally {
     setButtonLoading(false);
@@ -148,16 +140,17 @@ function shakeField(field) {
 
   field.addEventListener(
     "animationend",
-    () => {
-      field.style.animation = "";
-    },
+    () => { field.style.animation = ""; },
     { once: true }
   );
 }
 
-// ── 4. Bouton loading ───────────────────────
+// ── 4. Bouton loading ────────────────────────
 function setButtonLoading(isLoading) {
   const btnContent = button.querySelector(".btn-content");
+
+  // ✅ FIX #4 : Désactiver le bouton pour éviter les doubles soumissions
+  button.disabled = isLoading;
 
   if (isLoading) {
     button.classList.add("loading");
@@ -178,35 +171,26 @@ function setButtonLoading(isLoading) {
 
 // ── 5. Bannière ──────────────────────────────
 function showBanner(type) {
-  document
-    .querySelector(".success-banner, .error-banner")
-    ?.remove();
+  document.querySelector(".success-banner, .error-banner")?.remove();
 
   const isSuccess = type === "success";
-
   const banner = document.createElement("div");
 
-  banner.className = isSuccess
-    ? "success-banner"
-    : "error-banner";
+  banner.className = isSuccess ? "success-banner" : "error-banner";
 
   banner.innerHTML = isSuccess
     ? `
       <i class="fas fa-circle-check"></i>
       <div>
         <strong>Message envoyé !</strong><br>
-        <span>
-          Merci de nous avoir contacté.
-        </span>
+        <span>Merci de nous avoir contacté.</span>
       </div>
     `
     : `
       <i class="fas fa-circle-xmark"></i>
       <div>
         <strong>Erreur d'envoi</strong><br>
-        <span>
-          Veuillez réessayer plus tard.
-        </span>
+        <span>Veuillez réessayer plus tard.</span>
       </div>
     `;
 
@@ -215,15 +199,11 @@ function showBanner(type) {
   setTimeout(() => {
     banner.style.opacity = "0";
     banner.style.transform = "translateY(-10px)";
-
-    setTimeout(() => {
-      banner.remove();
-    }, 500);
-
+    setTimeout(() => { banner.remove(); }, 500);
   }, 5000);
 }
 
-// ── 6. Styles injectés ──────────────────────
+// ── 6. Styles injectés ───────────────────────
 const style = document.createElement("style");
 
 style.textContent = `
@@ -236,8 +216,10 @@ style.textContent = `
 }
 
 @keyframes spin {
-  to { transform:otate(360deg); }
+  to { transform:rotate(360deg); }
 }
+
+/* ✅ FIX #2 : "otate" corrigé en "rotate" ci-dessus */
 
 .success-banner,
 .error-banner {
